@@ -1,0 +1,185 @@
+{
+ "seed": 3319,
+ "predictions": {
+  "ml_f1": {
+   "text": "F1 ~0.88, precision cao hơn recall vì các từ khoá spam rất đặc trưng nên ít chặn nhầm ham (FP thấp), nhưng vocab 2000 từ sẽ bỏ lọt các tin spam dùng từ lạ (FN cao)",
+   "time": "14:35:37"
+  },
+  "ml_lr": {
+   "text": "lr=0.001 thì học quá chậm, lr=50 thì bước nhảy quá lớn",
+   "time": "14:35:41"
+  },
+  "dl_curve": {
+   "text": "mlp Khoong giam mai va se cao hon F1",
+   "time": "14:36:03"
+  },
+  "dl_relu": {
+   "text": "f1 sẽ giảm xuống",
+   "time": "14:36:08"
+  },
+  "emb_search": {
+   "text": "spam",
+   "time": "14:38:36"
+  },
+  "emb_tricky": {
+   "text": "3b encoder + logreg",
+   "time": "14:39:36"
+  },
+  "llm_fewshot": {
+   "text": "giam",
+   "time": "14:50:42"
+  },
+  "tradeoff": {
+   "text": "3.6, 3.5",
+   "time": "14:51:03"
+  },
+  "hard_eval": {
+   "text": "80% , obfuscation , natural_spam (giống người thật)",
+   "time": "14:51:15"
+  }
+ },
+ "checks": {
+  "1.1 vectorize": true,
+  "1.2 sigmoid / predict_proba": true,
+  "1.3 train_logreg": true,
+  "1.4 metrics": true,
+  "2.1 build_mlp": true,
+  "2.2 train_mlp": true,
+  "3.1–3.2 cosine / top_k_similar": true,
+  "3.3 knn_predict": true,
+  "4.2–4.3 prompt / parse_label": true,
+  "4.1 + 4.4 call_openai / llm_classify_batch": false,
+  "tính tay: baseline_accuracy": true,
+  "tính tay: sigmoid_0": true,
+  "tính tay: f1_example": true,
+  "tính tay: cosine_example": true,
+  "tính tay: llm_cost_per_day": true
+ },
+ "experiments": [
+  {
+   "key": "ml_f1",
+   "time": "14:35:37"
+  },
+  {
+   "key": "ml_lr",
+   "time": "14:35:41"
+  },
+  {
+   "key": "dl_curve",
+   "time": "14:36:03"
+  },
+  {
+   "key": "dl_relu",
+   "time": "14:36:08"
+  },
+  {
+   "key": "emb_search",
+   "time": "14:38:36"
+  },
+  {
+   "key": "emb_tricky",
+   "time": "14:39:36"
+  },
+  {
+   "key": "tradeoff",
+   "time": "14:51:04"
+  },
+  {
+   "key": "hard_eval",
+   "time": "14:51:16"
+  }
+ ],
+ "challenge": 1,
+ "results": {
+  "1. BoW + LogReg (tự code)": {
+   "accuracy": 0.9780645161290322,
+   "precision": 1.0,
+   "recall": 0.8023255813953488,
+   "f1": 0.8903225806451612,
+   "f1_SUB": 0.8571428571428571,
+   "train_s": 3.3904779120002786,
+   "msg_per_s": 27061.400432405568,
+   "p50_ms": 0.06191100010255468,
+   "p95_ms": 0.08018835005714196,
+   "usd_per_1k": 0.0
+  },
+  "2. BoW + MLP (deep learning)": {
+   "accuracy": 0.983225806451613,
+   "precision": 0.9866666666666667,
+   "recall": 0.8604651162790697,
+   "f1": 0.9192546583850931,
+   "f1_SUB": 0.888888888888889,
+   "train_s": 5.416641982999863,
+   "msg_per_s": 20721.686889606666,
+   "p50_ms": 0.26945999979943736,
+   "p95_ms": 0.3096891492987197,
+   "usd_per_1k": 0.0
+  },
+  "3a. Encoder (MiniLM) + kNN": {
+   "accuracy": 0.9716129032258064,
+   "precision": 0.8404255319148937,
+   "recall": 0.9186046511627907,
+   "f1": 0.8777777777777779,
+   "f1_SUB": 0.9189189189189189,
+   "train_s": 86.32449858700056,
+   "msg_per_s": 36.58847833907396,
+   "p50_ms": 43.754920499850414,
+   "p95_ms": 66.83572205038217,
+   "usd_per_1k": 0.0
+  },
+  "3b. Encoder (MiniLM) + LogReg": {
+   "accuracy": 0.9896774193548387,
+   "precision": 0.9875,
+   "recall": 0.9186046511627907,
+   "f1": 0.9518072289156626,
+   "f1_SUB": 0.9473684210526316,
+   "train_s": 86.86357545400006,
+   "msg_per_s": 49.421201743285806,
+   "p50_ms": 28.486244999839982,
+   "p95_ms": 43.01604189995487,
+   "usd_per_1k": 0.0
+  },
+  "3c. Encoder (MiniLM) + MLP head": {
+   "accuracy": 0.9883870967741936,
+   "precision": 0.9873417721518988,
+   "recall": 0.9069767441860465,
+   "f1": 0.9454545454545454,
+   "f1_SUB": 0.9473684210526316,
+   "train_s": 87.45217692400092,
+   "msg_per_s": 49.32600013987324,
+   "p50_ms": 32.02601349994438,
+   "p95_ms": 56.715646799557355,
+   "usd_per_1k": 0.0
+  },
+  "4a. LLM nhỏ zero-shot": {
+   "accuracy": 0.975,
+   "precision": 1.0,
+   "recall": 0.95,
+   "f1": 0.9743589743589743,
+   "f1_SUB": 0.9743589743589743,
+   "train_s": 0.0,
+   "msg_per_s": 0.2519875225663042,
+   "p50_ms": 64.90081249999093,
+   "p95_ms": 99.29572370001551,
+   "usd_per_1k": 0.0230975,
+   "model": "gemini-3.5-flash-lite",
+   "n_invalid": 0.0,
+   "total_usd": 0.0009239
+  },
+  "4b. LLM lớn zero-shot": {
+   "accuracy": 0.9,
+   "precision": 1.0,
+   "recall": 0.8,
+   "f1": 0.888888888888889,
+   "f1_SUB": 0.888888888888889,
+   "train_s": 0.0,
+   "msg_per_s": 0.18848215015650835,
+   "p50_ms": 1448.9633898000193,
+   "p95_ms": 1785.0676062000275,
+   "usd_per_1k": null,
+   "model": "gemini-3.6-flash",
+   "n_invalid": 0.0,
+   "total_usd": null
+  }
+ }
+}
